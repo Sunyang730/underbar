@@ -6,7 +6,14 @@
     describe('identity', function() {
       var uniqueObject = {};
 
+      _.identity = function(value) {
+        return value; //return whatever that is given.
+      };
+
       it('should return whatever value is passed into it', function() {
+        
+        
+
         expect(_.identity(1)).to.equal(1);
         expect(_.identity('string')).to.equal('string');
         expect(_.identity(false)).to.be.false;
@@ -15,6 +22,17 @@
     });
 
     describe('first', function() {
+      _.first = function (array, n) {
+        var empty = [];  //for the empty array case
+        if(n  == null) {  //main purpose of the first function is the get the first element. So this should be the first statement to check.
+          return array[0];
+        }else if(n > 0){ //We don't expect user to request for a empty array, therefore, anything greater than 0 should be the next statement. 
+          return array.slice(0,n); 
+        }else{ //if the user does request for 0 index, then we will give it. 
+          return empty;
+        } 
+      };
+
       it('should be able to pull out the first element of an array', function() {
         expect(_.first([1,2,3])).to.equal(1);
       });
@@ -33,6 +51,17 @@
     });
 
     describe('last', function() {
+      _.last = function (array, n){ //n is the number of elements that the user want to get from the array.
+        var empty = []; //for the empty array case
+        if(n == null){  //check to see if n is given. Since the main purpose of the last function is to get the last element of the array. This check will go first
+          return array[array.length-1];
+        }else if(n >0){ //In case the user want to number of elements starting from the last. 
+          return array.slice(Math.max(array.length - n, 0)); //slice 0 will give all the elements in the array if the user provide a index that is greater than the length of the array. Else length-n will provide the number of elements we want to slice off.
+        }else{ //If the user want an empty array. 
+          return empty; 
+        }
+      };
+
       it('should pull the last element from an array', function() {
         expect(_.last([1,2,3])).to.equal(3);
       });
@@ -51,6 +80,19 @@
     });
 
     describe('each', function() {
+      _.each = function (value, func) {
+        if(Array.isArray(value)){  //Check to see if the value is an Array. 
+          for(var i = 0; i<value.length; i++){
+            func(value[i], i, value); //the func argument require 3 arguments. element, index, and object/array itself. 
+          }
+        }else if(typeof value === "object") {  //if not an array then check if it is an object. 
+          for(var prop in value){
+            func(value[prop], prop, value);
+          }
+        }  //Do nothing if it is neither a array or object. 
+
+      };
+
       it('should iterate over arrays, providing access to the element, index, and array itself', function() {
         var animals = ['ant', 'bat', 'cat'];
         var iterationInputs = [];
