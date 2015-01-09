@@ -168,6 +168,16 @@
     });
 
     describe('filter', function() {
+      _.filter = function(array, func){
+        var result = [];  //The function require a empty array to store the result.
+        _.each(array, function(num, index, list){ //using each function to look through the array to deal with each individual array. 
+          if(func(num)){
+            result.push(num); //push the element to the array if it pass the test. 
+          }
+        });
+        return result; //return the array that match the requirement. 
+
+      };
       it('should return all even numbers in an array', function() {
         var isEven = function(num) { return num % 2 === 0; };
         var evens = _.filter([1, 2, 3, 4, 5, 6], isEven);
@@ -192,6 +202,15 @@
     });
 
     describe('reject', function() {
+      _.reject = function (array, func){  //similar to filter.
+        var result = [];
+        _.each(array, function(num, index, list){
+          if(!func(num)){ //reject will push the false result to the array since we want to reject.
+            result.push(num);
+          }
+        });
+        return result;
+      };
       it('should reject all even numbers', function() {
         var isEven = function(num) { return num % 2 === 0; };
         var odds = _.reject([1, 2, 3, 4, 5, 6], isEven);
@@ -216,6 +235,17 @@
     });
 
     describe('uniq', function() {
+      _.uniq = function (array, isSorted, iterator){
+        var result = [];   
+        _.each(array, function(value, index, list){ //using each function to loop through each element and check to see if it already contains index in the result array. 
+          if(_.indexOf(result, value) <0){  //If -1 means that it is not available in the new array and we will push it in.
+            result.push(value);
+          }
+        });
+        return result;
+
+      };
+
       it('should return all unique values contained in an unsorted array', function() {
         var numbers = [1, 2, 1, 3, 1, 4];
 
