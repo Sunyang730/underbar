@@ -80,14 +80,14 @@
     });
 
     describe('each', function() {
-      _.each = function (value, func) {
+      _.each = function (value, iterator) {
         if(Array.isArray(value)){  //Check to see if the value is an Array. 
           for(var i = 0; i<value.length; i++){
-            func(value[i], i, value); //the func argument require 3 arguments. element, index, and object/array itself. 
+            iterator(value[i], i, value); //the func argument require 3 arguments. element, index, and object/array itself. 
           }
         }else if(typeof value === "object") {  //if not an array then check if it is an object. 
           for(var prop in value){
-            func(value[prop], prop, value);
+            iterator(value[prop], prop, value);
           }
         }  //Do nothing if it is neither a array or object. 
 
@@ -168,10 +168,10 @@
     });
 
     describe('filter', function() {
-      _.filter = function(array, func){
+      _.filter = function(array, iterator){
         var result = [];  //The function require a empty array to store the result.
         _.each(array, function(num, index, list){ //using each function to look through the array to deal with each individual array. 
-          if(func(num)){
+          if(iterator(num)){
             result.push(num); //push the element to the array if it pass the test. 
           }
         });
@@ -202,10 +202,10 @@
     });
 
     describe('reject', function() {
-      _.reject = function (array, func){  //similar to filter.
+      _.reject = function (array, iterator){  //similar to filter.
         var result = [];
         _.each(array, function(num, index, list){
-          if(!func(num)){ //reject will push the false result to the array since we want to reject.
+          if(!iterator(num)){ //reject will push the false result to the array since we want to reject.
             result.push(num);
           }
         });
@@ -268,8 +268,12 @@
     });
 
     describe('map', function() {
-      _.map = function (){
-
+      _.map = function (value, iterator){  
+        var result = [];  
+        _.each(value, function(num, index, list){
+          result.push(iterator(num)); //loop through each element and do whatever the function want on each element.
+        });
+        return result;
       };
 
       it('should apply a function to every value in an array', function() {
@@ -313,6 +317,21 @@
     });
 
     describe('reduce', function() {
+      _.reduce = function (value, iterator, accumulator){
+        var result = 0;   // set up result = to 0 so that it does not contain random stuff. 
+        if(accumulator == null){ //check to see is given or not. 
+          result = value[0]; //if not given the first vaule that we dealt with will be the first value in array. 
+          for(var i = 1; i < value.length; i++){  //can't use _.each, since we are skipping the first element. 
+            result = iterator(result, value[i]); //pass the result with the iterator calculation. 
+          }
+        }else{
+          result = accumulator;   //if we are given accumulator
+          _.each(value, function(num, index, list){ //we will use the _.each function since the we are running through all the elements
+            result = iterator(result, num); //pass the result with the iterator calculation
+          });
+        }
+        return result; //return the result. 
+      };
       it('should be able to sum up an array', function() {
         var add = function(tally, item) {return tally + item; };
         var total = _.reduce([1, 2, 3], add, 0);
