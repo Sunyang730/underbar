@@ -23,13 +23,13 @@
 
     describe('first', function() {
       _.first = function (array, n) {
-        var empty = [];  //for the empty array case
+        //var empty = [];  //for the empty array case
         if(n  == null) {  //main purpose of the first function is the get the first element. So this should be the first statement to check.
           return array[0];
         }else if(n > 0){ //We don't expect user to request for a empty array, therefore, anything greater than 0 should be the next statement. 
           return array.slice(0,n); 
         }else{ //if the user does request for 0 index, then we will give it. 
-          return empty;
+          return []; //will return any empty array. 
         } 
       };
 
@@ -52,13 +52,13 @@
 
     describe('last', function() {
       _.last = function (array, n){ //n is the number of elements that the user want to get from the array.
-        var empty = []; //for the empty array case
+        //var empty = []; //for the empty array case
         if(n == null){  //check to see if n is given. Since the main purpose of the last function is to get the last element of the array. This check will go first
           return array[array.length-1];
         }else if(n >0){ //In case the user want to number of elements starting from the last. 
           return array.slice(Math.max(array.length - n, 0)); //slice 0 will give all the elements in the array if the user provide a index that is greater than the length of the array. Else length-n will provide the number of elements we want to slice off.
         }else{ //If the user want an empty array. 
-          return empty; 
+          return []; 
         }
       };
 
@@ -268,6 +268,10 @@
     });
 
     describe('map', function() {
+      _.map = function (){
+
+      };
+
       it('should apply a function to every value in an array', function() {
         var doubledNumbers = _.map([1, 2, 3], function(num) {
           return num * 2;
