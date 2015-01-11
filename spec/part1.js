@@ -170,7 +170,7 @@
     describe('filter', function() {
       _.filter = function(array, iterator){
         var result = [];  //The function require a empty array to store the result.
-        _.each(array, function(num, index, list){ //using each function to look through the array to deal with each individual array. 
+        _.each(array, function(num){ //using each function to look through the array to deal with each individual array. 
           if(iterator(num)){
             result.push(num); //push the element to the array if it pass the test. 
           }
@@ -204,7 +204,7 @@
     describe('reject', function() {
       _.reject = function (array, iterator){  //similar to filter.
         var result = [];
-        _.each(array, function(num, index, list){
+        _.each(array, function(num){
           if(!iterator(num)){ //reject will push the false result to the array since we want to reject.
             result.push(num);
           }
@@ -237,7 +237,7 @@
     describe('uniq', function() {
       _.uniq = function (array, isSorted, iterator){
         var result = [];   
-        _.each(array, function(value, index, list){ //using each function to loop through each element and check to see if it already contains index in the result array. 
+        _.each(array, function(value){ //using each function to loop through each element and check to see if it already contains index in the result array. 
           if(_.indexOf(result, value) <0){  //If -1 means that it is not available in the new array and we will push it in.
             result.push(value);
           }
@@ -270,7 +270,7 @@
     describe('map', function() {
       _.map = function (value, iterator){  
         var result = [];  
-        _.each(value, function(num, index, list){
+        _.each(value, function(num){
           result.push(iterator(num)); //loop through each element and do whatever the function want on each element.
         });
         return result;
@@ -326,7 +326,7 @@
           }
         }else{
           result = accumulator;   //if we are given accumulator
-          _.each(value, function(num, index, list){ //we will use the _.each function since the we are running through all the elements
+          _.each(value, function(num){ //we will use the _.each function since the we are running through all the elements
             result = iterator(result, num); //pass the result with the iterator calculation
           });
         }
