@@ -17,6 +17,29 @@
     });
 
     describe('every', function() {
+      _.every = function (value, iterator){
+        var result = []; //contains all the true/false test in a array. 
+        _.each(value, function(num){
+          if(iterator != null){   // make sure that iterator is provided
+            if(iterator(num)){  //another if statement to see if it pass the callback function test
+              return result.push(true); //if passed then add true to result. 
+            }else{
+              return result.push(false); //else add false. 
+            }
+          }else{  //if no callback function, then work on the element itself. 
+            if(num){  //if the element is true 
+              return result.push(true); //add true to the result. 
+            }else{
+              return result.push(false);  //add false if not. 
+            }
+          }
+        });
+        if(_.contains(result, false)){
+          return false;
+        }else{
+          return true;
+        }
+      };
       var isEven = function(num) {
         return num % 2 === 0;
       };
