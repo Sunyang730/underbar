@@ -343,19 +343,22 @@
   _.memoize = function(func) {
   
     var result; 
-    var alreadyCalled = false;
     //var counter = 0;
+    var alreadyCalled = false
 
     return function(){   
         
         if(result != func.apply(this, arguments) || !alreadyCalled){
           result = func.apply(this, arguments);
           alreadyCalled = true;
+      
           //counter++;
         }
         //alert(result);
         //alert(counter);
-        return result; 
+        return result;
+
+        
       };
       
   };
@@ -367,7 +370,23 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+
+    //return setTimeout(func, wait);
+    var args = Array.prototype.slice.call(arguments, 2);
+    return setTimeout(function(){
+      return func.apply(null, args);
+    }, wait);
+    
+    //The _.delay function will return the function after a certain time. 
+    //All the arguments after the first two will consider as the arguments for
+    //the callback function. Since arguments is not an array, we will use the slice.call
+    //method to slice off the first two arguments and assign it to args as an array. 
+    //First parameter of setTimeout will take a function. We can do func.apply directly. 
+    //A anonymous funciton is used to return the callback function with arguments. 
+
+
   };
+
 
 
   /**
