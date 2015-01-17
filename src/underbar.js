@@ -340,26 +340,29 @@
   // _.memoize should return a function that, when called, will check if it has
   // already computed the result for the given argument and return that value
   // instead if possible.
+// _.has = function(obj, key) {
+//     return obj != null && hasOwnProperty.call(obj, key);
+//  };
+
   _.memoize = function(func) {
-  
-    var result; 
-    //var counter = 0;
-    var alreadyCalled = false
+    //Object cache is use to store all the result and with a key value of the first argument.
+    //The first argument is consider as the key due the primitive aspect. The function will 
+    //run once for each (2,1) and (1,2) even if they have the same result. memoize does not 
+    //run base on result, but on the arguments, or more precisely on the first argument. 
+    //The first argument will be set as an key to cache. If the key exist with .hasOwnProperty
+    //it will return the cache with that key, else it will create a new property of cache and
+    //assign the result. 
 
-    return function(){   
-        
-        if(result != func.apply(this, arguments) || !alreadyCalled){
-          result = func.apply(this, arguments);
-          alreadyCalled = true;
-      
-          //counter++;
-        }
-        //alert(result);
-        //alert(counter);
-        return result;
+    var cache = {};
 
-        
-      };
+    return function(){
+      var key = arguments[0];
+      if(cache.hasOwnProperty(key)){
+        return cache[key];
+      }else{
+        return cache[key] = func.apply(this, arguments);
+      }
+    };
       
   };
 
@@ -400,6 +403,28 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var newArray = array.slice();
+
+    //noRepeat will make sure that j and i index will not be the same at all.
+    //noRepeat is a recursion that will keep looping until i and j are different.  
+    var noRepeat = function(j, i){
+      if(j != i){
+        return j;
+      }else{
+        return noRepeat(Math.floor(Math.random() * array.length - i) + i, i);
+      }
+    };
+    //for loop through the whole array and keep shuffling all the elements in the array.
+
+    for(var i = 0; i<array.length; i++){
+      var j = Math.floor(Math.random() * array.length - i) + i;
+      var j = noRepeat(j, i); 
+      var temp = newArray[i];
+      newArray[i] = newArray[j];
+      newArray[j] = temp;
+     
+    }
+    return newArray; 
   };
 
 
